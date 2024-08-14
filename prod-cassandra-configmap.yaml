@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prod-cassandra-configmap
+data:
+  CASSANDRA_CLUSTER_NAME: "OAI HSS Cluster"
+  CASSANDRA_ENDPOINT_SNITCH: "GossipingPropertyFileSnitch"

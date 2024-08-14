@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-oai-hss-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-oai-hss-v1
+  template:
+    metadata:
+      labels:
+        app: prod-oai-hss-v1
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-cass-v1"}, {"name": "prod-oai-s6a-v1"}]'
+    spec:
+      containers:
+      - name: prod-oai-hss-v1
+        image: registry.gitlab.com/gejioka/oai-images-test/dev_hss_v1:1.0.0
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        volumeMounts:
+        - mountPath: /oai-hss
+          name: oai-hss-volume
+        securityContext:
+          privileged: true
+      volumes:
+      - name: oai-hss-volume
+        hostPath:
+          path: ./component/oai-hss
+          type: Directory

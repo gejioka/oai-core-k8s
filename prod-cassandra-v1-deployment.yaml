@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-cassandra-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-cassandra-v1
+  template:
+    metadata:
+      labels:
+        app: prod-cassandra-v1
+      annotations:
+        k8s.v1.cni.cncf.io/networks: prod-oai-cass-v1
+    spec:
+      containers:
+      - name: prod-cassandra-v1
+        image: registry.gitlab.com/gejioka/oai-images-test/dev_cassandra_v1:1.0.0
+        env:
+        - name: CASSANDRA_CLUSTER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: prod-cassandra-configmap
+              key: CASSANDRA_CLUSTER_NAME
+        - name: CASSANDRA_ENDPOINT_SNITCH
+          valueFrom:
+            configMapKeyRef:
+              name: prod-cassandra-configmap
+              key: CASSANDRA_ENDPOINT_SNITCH
+        command: ["/bin/bash", "-c", "sleep infinity"]

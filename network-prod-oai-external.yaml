@@ -1,0 +1,18 @@
+# network-prod-oai-external-v1.yaml
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: prod-oai-external-v1
+spec:
+  config: |
+    {
+      "cniVersion": "0.4.0",
+      "name": "prod-oai-external-v1",
+      "type": "bridge",
+      "bridge": "br-external",
+      "ipam": {
+        "type": "host-local",
+        "subnet": "192.168.62.192/27",
+        "gateway": "192.168.62.193"
+      }
+    }
