@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-oai-spgwc-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-oai-spgwc-v1
+  template:
+    metadata:
+      labels:
+        app: prod-oai-spgwc-v1
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s11c-v1"}, {"name": "prod-oai-sx-v1"}]'
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry-secret
+      containers:
+      - name: prod-oai-spgwc-v1
+        image: registry.gitlab.com/gejioka/oai-images-test/dev_spgwc_v1:1.0.0
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        volumeMounts:
+        - mountPath: /oai-spgwc
+          name: oai-spgwc-volume
+        securityContext:
+          privileged: true
+      volumes:
+      - name: oai-spgwc-volume
+        hostPath:
+          path: /home/ubuntu/oai-core-k8s/component/oai-spgwc/
+          type: Directory
