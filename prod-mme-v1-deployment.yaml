@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-oai-mme-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-oai-mme-v1
+  template:
+    metadata:
+      labels:
+        app: prod-oai-mme-v1
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s6a-v1"}, {"name": "prod-oai-s11c-v1"}, {"name": "prod-oai-s1c-v1"}, {"name": "prod-oai-external-v1"}]'
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry-secret
+      containers:
+      - name: prod-oai-mme-v1
+        image: registry.gitlab.com/gejioka/oai-images-test/dev_mme_v1:1.0.1
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        volumeMounts:
+        - mountPath: /oai-mme
+          name: oai-mme-volume
+        securityContext:
+          privileged: true
+      volumes:
+      - name: oai-mme-volume
+        hostPath:
+          path: /home/ubuntu/oai-core-k8s/component/oai-mme/
+          type: Directory
