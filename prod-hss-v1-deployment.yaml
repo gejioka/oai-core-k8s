@@ -14,6 +14,8 @@ spec:
       annotations:
         k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-cass-v1"}, {"name": "prod-oai-s6a-v1"}]'
     spec:
+      imagePullSecrets:
+      - name: gitlab-registry-secret
       containers:
       - name: prod-oai-hss-v1
         image: registry.gitlab.com/gejioka/oai-images-test/dev_hss_v1:1.0.0
@@ -26,5 +28,5 @@ spec:
       volumes:
       - name: oai-hss-volume
         hostPath:
-          path: ./component/oai-hss
+          path: /home/ubuntu/oai-core-k8s/component/oai-hss/
           type: Directory
