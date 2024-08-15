@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-oai-spgwu-tiny-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-oai-spgwu-tiny-v1
+  template:
+    metadata:
+      labels:
+        app: prod-oai-spgwu-tiny-v1
+      annotations:
+        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s1u-v1"}, {"name": "prod-oai-sx-v1"}, {"name": "prod-oai-external-v1"}]'
+    spec:
+      imagePullSecrets:
+      - name: gitlab-registry-secret
+      containers:
+      - name: prod-oai-spgwu-tiny-v1
+        image: registry.gitlab.com/gejioka/oai-images-test/dev_spgwu_tiny_v1:1.0.0
+        command: ["/bin/bash", "-c", "sleep infinity"]
+        volumeMounts:
+        - mountPath: /oai-spgwu-tiny
+          name: oai-spgwu-tiny-volume
+        securityContext:
+          privileged: true
+      volumes:
+      - name: oai-spgwu-tiny-volume
+        hostPath:
+          path: /home/ubuntu/oai-core-k8s/component/oai-spgwu-tiny/
+          type: Directory
