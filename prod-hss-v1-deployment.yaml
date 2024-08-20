@@ -28,5 +28,5 @@ spec:
       volumes:
       - name: oai-hss-volume
         hostPath:
-          path: /home/ubuntu/oai-core-k8s/component/oai-hss/
-          type: Directory
+          path: /home/ubuntu/oai-core-k8s/component/oai-hss
+          type: DirectoryOrCreate
