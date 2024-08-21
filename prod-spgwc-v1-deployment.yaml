@@ -29,4 +29,4 @@ spec:
       - name: oai-spgwc-volume
         hostPath:
           path: /home/ubuntu/oai-core-k8s/component/oai-spgwc/
-          type: Directory
+          type: DirectoryOrCreate

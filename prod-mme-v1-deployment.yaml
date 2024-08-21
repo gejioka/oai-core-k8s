@@ -29,4 +29,4 @@ spec:
       - name: oai-mme-volume
         hostPath:
           path: /home/ubuntu/oai-core-k8s/component/oai-mme/
-          type: Directory
+          type: DirectoryOrCreate
