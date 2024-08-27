@@ -1,18 +1,24 @@
-# network-prod-oai-s6a-v1.yaml
+# network-prod-oai-s1u-v1.yaml
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
   name: prod-oai-s1u-v1
+  namespace: default
 spec:
   config: |
     {
       "cniVersion": "0.4.0",
-      "name": "prod-oai-s1u-v1",
-      "type": "bridge",
-      "bridge": "br-s1u",
+      "type": "macvlan",
+      "master": "ens33",
+      "mode": "bridge",
       "ipam": {
-        "type": "host-local",
-        "subnet": "192.168.62.96/27",
-        "gateway": "192.168.62.97"
+          "type": "static",
+          "subnet": "192.168.62.96/27",
+          "gateway": "192.168.62.97",
+          "routes": [
+              {
+                  "dst": "0.0.0.0/0"
+              }
+          ]
       }
     }

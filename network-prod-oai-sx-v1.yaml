@@ -3,16 +3,22 @@ apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
   name: prod-oai-sx-v1
+  namespace: default
 spec:
   config: |
     {
       "cniVersion": "0.4.0",
-      "name": "prod-oai-sx-v1",
-      "type": "bridge",
-      "bridge": "br-sx",
+      "type": "macvlan",
+      "master": "ens33",
+      "mode": "bridge",
       "ipam": {
-        "type": "host-local",
-        "subnet": "192.168.62.64/27",
-        "gateway": "192.168.62.65"
+          "type": "static",
+          "subnet": "192.168.62.64/27",
+          "gateway": "192.168.62.65",
+          "routes": [
+              {
+                  "dst": "0.0.0.0/0"
+              }
+          ]
       }
     }

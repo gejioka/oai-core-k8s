@@ -12,21 +12,41 @@ spec:
       labels:
         app: prod-oai-mme-v1
       annotations:
-        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s6a-v1"}, {"name": "prod-oai-s11c-v1"}, {"name": "prod-oai-s1c-v1"}, {"name": "prod-oai-external-v1"}]'
+        # k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s6a-v1"}, {"name": "prod-oai-s11c-v1"}, {"name":"prod-oai-s1c-v1"}, {"name": "prod-oai-external"}]'
+        # k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-external", "interface": "eth1"}, {"name": "prod-oai-s11c-v1", "interface": "eth2"}, {"name":"prod-oai-s1c-v1", "interface": "eth3"}, {"name": "prod-oai-s6a-v1", "interface": "eth4"}]'
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            {
+              "name": "prod-oai-s6a-v1",
+              "ips": ["192.168.62.2/27"]
+            },
+            {
+              "name": "prod-oai-s11c-v1",
+              "ips": ["192.168.62.34/27"]
+            },
+            {
+              "name": "prod-oai-s1c-v1",
+              "ips": ["192.168.62.130/27"]
+            },
+            {
+              "name": "prod-oai-external",
+              "ips": ["192.168.62.194/27"]
+            }
+          ]
     spec:
       imagePullSecrets:
-      - name: gitlab-registry-secret
+        - name: gitlab-registry-secret
       containers:
-      - name: prod-oai-mme-v1
-        image: registry.gitlab.com/gejioka/oai-images-test/dev_mme_v1:1.0.1
-        command: ["/bin/bash", "-c", "sleep infinity"]
-        volumeMounts:
-        - mountPath: /oai-mme
-          name: oai-mme-volume
-        securityContext:
-          privileged: true
+        - name: prod-oai-mme-v1
+          image: 'registry.gitlab.com/gejioka/oai-images-test/dev_mme_v1:1.0.1'
+          command: ["/bin/bash", "-c", "sleep infinity"]
+          volumeMounts:
+            - mountPath: /oai-mme
+              name: oai-mme-volume
+          securityContext:
+            privileged: true
       volumes:
-      - name: oai-mme-volume
-        hostPath:
-          path: /home/ubuntu/oai-core-k8s/component/oai-mme/
-          type: DirectoryOrCreate
+        - name: oai-mme-volume
+          hostPath:
+            path: /home/ubuntu/oai-core-k8s/component/oai-mme/
+            type: DirectoryOrCreate

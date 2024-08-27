@@ -12,7 +12,22 @@ spec:
       labels:
         app: prod-oai-spgwu-tiny-v1
       annotations:
-        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s1u-v1"}, {"name": "prod-oai-sx-v1"}, {"name": "prod-oai-external-v1"}]'
+        # k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s1u-v1"}, {"name": "prod-oai-sx-v1"}, {"name": "prod-oai-external-v1"}]'
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            {
+              "name": "prod-oai-s1u-v1",
+              "ips": ["192.168.62.98/27"]
+            },
+            {
+              "name": "prod-oai-sx-v1",
+              "ips": ["192.168.62.67/27"]
+            },
+            {
+              "name": "prod-oai-external",
+              "ips": ["192.168.62.195/27"]
+            }
+          ]
     spec:
       imagePullSecrets:
       - name: gitlab-registry-secret

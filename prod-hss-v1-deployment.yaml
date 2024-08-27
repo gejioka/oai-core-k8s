@@ -12,7 +12,17 @@ spec:
       labels:
         app: prod-oai-hss-v1
       annotations:
-        k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-cass-v1"}, {"name": "prod-oai-s6a-v1"}]'
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            {
+              "name": "prod-oai-cass-v1",
+              "ips": ["192.168.62.162/27"]
+            },
+            {
+              "name": "prod-oai-s6a-v1",
+              "ips": ["192.168.62.3/27"]
+            }
+          ]
     spec:
       imagePullSecrets:
       - name: gitlab-registry-secret

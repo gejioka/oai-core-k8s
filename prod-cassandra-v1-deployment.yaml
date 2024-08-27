@@ -12,7 +12,13 @@ spec:
       labels:
         app: prod-cassandra-v1
       annotations:
-        k8s.v1.cni.cncf.io/networks: prod-oai-cass-v1
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            { 
+              "name": "prod-oai-cass-v1",
+              "ips": ["192.168.62.163/27"] 
+            }
+          ]
     spec:
       imagePullSecrets:
       - name: gitlab-registry-secret
