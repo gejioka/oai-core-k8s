@@ -12,8 +12,6 @@ spec:
       labels:
         app: prod-oai-mme-v1
       annotations:
-        # k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s6a-v1"}, {"name": "prod-oai-s11c-v1"}, {"name":"prod-oai-s1c-v1"}, {"name": "prod-oai-external"}]'
-        # k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-external", "interface": "eth1"}, {"name": "prod-oai-s11c-v1", "interface": "eth2"}, {"name":"prod-oai-s1c-v1", "interface": "eth3"}, {"name": "prod-oai-s6a-v1", "interface": "eth4"}]'
         k8s.v1.cni.cncf.io/networks: |
           [
             {

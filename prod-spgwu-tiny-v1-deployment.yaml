@@ -12,7 +12,6 @@ spec:
       labels:
         app: prod-oai-spgwu-tiny-v1
       annotations:
-        # k8s.v1.cni.cncf.io/networks: '[{"name": "prod-oai-s1u-v1"}, {"name": "prod-oai-sx-v1"}, {"name": "prod-oai-external-v1"}]'
         k8s.v1.cni.cncf.io/networks: |
           [
             {
