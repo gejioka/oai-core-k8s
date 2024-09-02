@@ -11,20 +11,14 @@ spec:
     metadata:
       labels:
         app: prod-cassandra-v1
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [
-            { 
-              "name": "prod-oai-cass-v1",
-              "ips": ["192.168.62.163/27"] 
-            }
-          ]
     spec:
       imagePullSecrets:
       - name: gitlab-registry-secret
       containers:
       - name: prod-cassandra-v1
         image: registry.gitlab.com/gejioka/oai-images-test/dev_cassandra_v1:1.0.0
+        securityContext:
+          privileged: true
         env:
         - name: LOG_LEVEL
           value: "debug"
@@ -38,4 +32,19 @@ spec:
             configMapKeyRef:
               name: prod-cassandra-configmap
               key: CASSANDRA_ENDPOINT_SNITCH
-        command: ["/bin/bash", "-c", "sleep infinity"]
+        command:
+        - sh
+        - -c
+        - |
+          # ip addr delete 10.85.0.128/16 dev eth0
+          # ip addr add 192.168.62.163/27 dev eth0
+          # ip link set dev eth0 up
+          # ip route add default via 192.168.62.161 dev eth0
+          # ip link set eth0 down
+          # ip link set eth0 name eth1
+          # ip link set eth1 up
+          # ip link set eth2 down
+          # ip link set eth2 name eth0
+          # ip link set eth0 up
+          # ip link set eth1 down
+          sleep infinity

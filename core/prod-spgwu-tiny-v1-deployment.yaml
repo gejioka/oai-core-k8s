@@ -16,14 +16,17 @@ spec:
           [
             {
               "name": "prod-oai-s1u-v1",
+              "interface": "eth2",
               "ips": ["192.168.62.98/27"]
             },
             {
               "name": "prod-oai-sx-v1",
+              "interface": "eth3",
               "ips": ["192.168.62.67/27"]
             },
             {
               "name": "prod-oai-external",
+              "interface": "eth1",
               "ips": ["192.168.62.195/27"]
             }
           ]
@@ -33,7 +36,27 @@ spec:
       containers:
       - name: prod-oai-spgwu-tiny-v1
         image: registry.gitlab.com/gejioka/oai-images-test/dev_spgwu_tiny_v1:1.0.0
-        command: ["/bin/bash", "-c", "sleep infinity"]
+        securityContext:
+          privileged: true
+        command:
+        - sh
+        - -c
+        - |
+          ip link set eth0 down
+          ip link set eth0 name eth4
+          # ip link set eth2 up
+          ip link set eth1 down
+          ip link set eth1 name eth0
+          ip link set eth0 up
+          ip link set eth2 down
+          ip link set eth2 name eth1
+          ip link set eth1 up
+          ip link set eth3 down
+          ip link set eth3 name eth2
+          ip link set eth2 up
+          ip link set eth4 name eth3
+          ip link set eth3 up
+          sleep infinity
         volumeMounts:
         - mountPath: /oai-spgwu-tiny
           name: oai-spgwu-tiny-volume

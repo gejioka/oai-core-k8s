@@ -1,0 +1,10 @@
+apiVersion: crd.projectcalico.org/v1
+kind: IPPool
+metadata:
+  name: custom-ippool-17217
+spec:
+  cidr: 172.17.0.0/24
+  ipipMode: Never
+  vxlanMode: Never
+  natOutgoing: true
+  nodeSelector: "all()"

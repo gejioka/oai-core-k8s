@@ -16,10 +16,12 @@ spec:
           [
             {
               "name": "prod-oai-s11c-v1",
+              "interface": "eth1",
               "ips": ["192.168.62.35/27"]
             },
             {
               "name": "prod-oai-sx-v1",
+              "interface": "eth2",
               "ips": ["192.168.62.66/27"]
             }
           ]
@@ -29,12 +31,30 @@ spec:
       containers:
       - name: prod-oai-spgwc-v1
         image: registry.gitlab.com/gejioka/oai-images-test/dev_spgwc_v1:1.0.0
-        command: ["/bin/bash", "-c", "sleep infinity"]
+        securityContext:
+          privileged: true
+        command:
+        - sh
+        - -c
+        - |
+          ifconfig eth0 down
+          ifconfig eth0 name eth3
+          ifconfig eth3 up
+          ifconfig eth1 down
+          ifconfig eth1 name eth0
+          ifconfig eth0 up
+          ifconfig eth2 down
+          ifconfig eth2 name eth1
+          ifconfig eth1 up
+          ifconfig eth3 down
+          ifconfig eth3 name eth2
+          ifconfig eth2 up
+          sleep infinity
         volumeMounts:
         - mountPath: /oai-spgwc
           name: oai-spgwc-volume
-        securityContext:
-          privileged: true
+        # securityContext:
+          # privileged: true
       volumes:
       - name: oai-spgwc-volume
         hostPath:

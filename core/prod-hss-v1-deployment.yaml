@@ -15,11 +15,13 @@ spec:
         k8s.v1.cni.cncf.io/networks: |
           [
             {
-              "name": "prod-oai-cass-v1",
+              "name": "prod-oai-s6a-v1",
+              "interface": "eth1",
               "ips": ["192.168.62.162/27"]
             },
             {
               "name": "prod-oai-s6a-v1",
+              "interface": "eth3",
               "ips": ["192.168.62.3/27"]
             }
           ]
@@ -29,7 +31,22 @@ spec:
       containers:
       - name: prod-oai-hss-v1
         image: registry.gitlab.com/gejioka/oai-images-test/dev_hss_v1:1.0.0
-        command: ["/bin/bash", "-c", "sleep infinity"]
+        command:
+        - sh
+        - -c
+        - |
+          # ifconfig eth0 192.168.62.162 netmask 255.255.255.224
+          # route add default gw 192.168.62.161 eth0
+          # ip link set eth0 down
+          # ip link set eth0 name eth2
+          # ip link set eth2 up
+          # ip link set eth1 down
+          # ip link set eth1 name eth0
+          # ip link set eth0 up
+          # ip link set eth3 down
+          # ip link set eth3 name eth1
+          # ip link set eth1 up
+          sleep infinity
         volumeMounts:
         - mountPath: /oai-hss
           name: oai-hss-volume
