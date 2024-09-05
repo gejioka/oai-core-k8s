@@ -42,20 +42,6 @@ spec:
         - sh
         - -c
         - |
-          ip link set eth0 down
-          ip link set eth0 name eth4
-          # ip link set eth2 up
-          ip link set eth1 down
-          ip link set eth1 name eth0
-          ip link set eth0 up
-          ip link set eth2 down
-          ip link set eth2 name eth1
-          ip link set eth1 up
-          ip link set eth3 down
-          ip link set eth3 name eth2
-          ip link set eth2 up
-          ip link set eth4 name eth3
-          ip link set eth3 up
           sleep infinity
         volumeMounts:
         - mountPath: /oai-spgwu-tiny
