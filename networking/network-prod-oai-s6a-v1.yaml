@@ -8,7 +8,7 @@ spec:
   config: '{
       "cniVersion": "0.4.0",
       "type": "macvlan",
-      "master": "ens33",
+      "master": "eth0",
       "mode": "bridge",
       "ipam": {
           "type": "static",
